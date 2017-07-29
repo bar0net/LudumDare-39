@@ -13,10 +13,17 @@ public class Turret : MonoBehaviour {
 
     float timer = 0f;
     Vector3 shootingPoint;
+    int bulletCost;
+    bool active = true;
+
+    GameManager _gm;
 
 	// Use this for initialization
 	void Start () {
-        shootingPoint = this.transform.GetChild(0).position;
+        _gm = FindObjectOfType<GameManager>();
+
+        shootingPoint = new Vector3(this.transform.GetChild(0).position.x, this.transform.GetChild(0).position.y, 0);
+        bulletCost = projectile.GetComponent<Projectile>().bulletCost;
 	}
 	
 	// Update is called once per frame
@@ -24,7 +31,7 @@ public class Turret : MonoBehaviour {
         if (timer > 0) timer -= Time.deltaTime;
         else
         {
-            if (target != null)
+            if (target != null && active)
             {
                 Shoot();
                 timer = cooldown;
@@ -69,10 +76,13 @@ public class Turret : MonoBehaviour {
 
     void ShootProjectile()
     {
+        if (_gm.currPower < bulletCost) return;
+
         GameObject go = (GameObject)Instantiate(projectile, shootingPoint, Quaternion.identity);
         Projectile p = go.GetComponent<Projectile>();
         p.target = target.transform;
         if (this.transform.position.y < target.transform.position.y) p.behindTower = true;
+        _gm.DrainPower(bulletCost);
     }
 
     private void OnPostRender()
@@ -91,5 +101,13 @@ public class Turret : MonoBehaviour {
         }
         */
         
+    }
+
+    public void ToogleTurret ()
+    {
+        active = !active;
+
+        if (active) GetComponent<SpriteRenderer>().color = Color.white;
+        else GetComponent<SpriteRenderer>().color = new Color(1.0f,0.5f,0.5f);
     }
 }

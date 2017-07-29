@@ -74,8 +74,7 @@ public class SpawnManager : MonoBehaviour {
 
         if (currWave >= waves.Length) EndGame();
 
-        _gm.ChangeDaytime();
-        this.enabled = false;
+        _gm.ChangeDaytime(false);
     }
 
     void EndGame()

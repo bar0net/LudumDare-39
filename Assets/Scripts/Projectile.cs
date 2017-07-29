@@ -7,6 +7,7 @@ public class Projectile : MonoBehaviour {
     public bool follow = true;
     public int damage = 25;
     public float velocity = 10f;
+    public int bulletCost = 1;
     public bool checkTimer = true;
     public bool checkDistance = true;
     public bool behindTower = false;

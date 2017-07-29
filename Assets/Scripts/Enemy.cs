@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour {
     public int health = 100;
     public float velocity = 0.5f;
 
+    public int loot = 10; 
+
     [SerializeField]
     int next_waypoint = 0;
 
@@ -17,6 +19,7 @@ public class Enemy : MonoBehaviour {
     Vector3 offset;
 
     float timer;
+    bool mirrored = false;
     
 	// Use this for initialization
 	void Start () {
@@ -45,6 +48,13 @@ public class Enemy : MonoBehaviour {
             direction = pathing.transform.GetChild(next_waypoint).position + offset - this.transform.position;
             timer = direction.magnitude / velocity;
             direction = direction.normalized;
+
+            if ((direction.x > 0 && !mirrored) || (direction.x < 0 && mirrored))
+            {
+                mirrored = !mirrored;
+                this.transform.localScale = new Vector3(-this.transform.localScale.x, 1, 1);
+            }
+            
         }
         else Success();
 
@@ -52,11 +62,13 @@ public class Enemy : MonoBehaviour {
 
     void Success()
     {
+        FindObjectOfType<GameManager>().KillPopulation(health);
         Destroy(this.gameObject);
     }
 
     void Die()
     {
+        FindObjectOfType<GameManager>().EarnMoney(loot);
         Destroy(this.gameObject);
     }
 

@@ -259,3 +259,14 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/Library
+/ProjectSettings
+/Temp
+/Temp/__Backupscenes
+*.backup
+/Temp/__Backupscenes/0.backup
+/LD39.csproj
+/LD39.sln
+/Assets/_Scenes
+/Assets/Art
+/Assets/Prefabs

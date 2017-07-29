@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour {
-    public const float _PROXIMITY_ = 0.2f;
-
     [System.Serializable]
     public struct Wave
     {
@@ -54,6 +52,7 @@ public class SpawnManager : MonoBehaviour {
         GameObject go = (GameObject)Instantiate(waves[currWave].enemy, tr.transform.position, Quaternion.identity, enemies.transform);
         go.GetComponent<Enemy>().pathing = waves[currWave].pathing;
         go.GetComponent<SpriteRenderer>().sortingOrder = waves[currWave].number;
+        go.name = "Enemy_" + waves[currWave].number + "_" + currWave;
 
         waves[currWave].number--;
     }

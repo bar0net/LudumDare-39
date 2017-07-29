@@ -20,7 +20,6 @@ public class Enemy : MonoBehaviour {
     
 	// Use this for initialization
 	void Start () {
-        Debug.Log(direction == null);
         if (pathing == null) Destroy(this.gameObject);
         offset = new Vector3(Random.Range(-0.2f,0.2f), Random.Range(-0.2f, 0.2f), 0);
 	}
@@ -54,6 +53,14 @@ public class Enemy : MonoBehaviour {
 
     void Die()
     {
-
+        Destroy(this.gameObject);
     }
+
+    public void Hit(int damage)
+    {
+        health -= damage;
+
+        if (health <= 0) Die();
+    }
+
 }

@@ -11,6 +11,8 @@ public class UIManager : MonoBehaviour {
     public Button timeButton;
     public Image tooglePower;
     public Image[] turretButtons;
+    public Image advanceTimeButton;
+    public Sprite[] advanceTimeSprites;
 
     int turretButtonHighlighted = -1;
     private void Start()
@@ -22,7 +24,7 @@ public class UIManager : MonoBehaviour {
     {
         for (int i = 0; i < timeButtons.Length; ++i) {
 
-            if (i == index) timeButtons[i].color = Color.red;
+            if (i == index) timeButtons[i].color = new Color32(255, 174, 0, 255);
             else timeButtons[i].color = Color.white;
         }
     }
@@ -45,6 +47,9 @@ public class UIManager : MonoBehaviour {
     public void EnableTimeButton(bool isActive)
     {
         timeButton.interactable = isActive;
+
+        if (isActive) advanceTimeButton.sprite = advanceTimeSprites[0];
+        else advanceTimeButton.sprite = advanceTimeSprites[1];
     }
 
     public void HighlightTooglePower(bool active)
@@ -68,5 +73,10 @@ public class UIManager : MonoBehaviour {
         if (turretButtonHighlighted == -1) return;
 
         turretButtons[turretButtonHighlighted].color = Color.white;
+    }
+
+    public void ChangeAdvanceTimeIcon(Sprite sprite)
+    {
+        advanceTimeButton.sprite = sprite;
     }
 }

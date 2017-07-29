@@ -17,6 +17,7 @@ public class Turret : MonoBehaviour {
     bool active = true;
 
     GameManager _gm;
+    public Color currColor = Color.white;
 
 	// Use this for initialization
 	void Start () {
@@ -107,7 +108,9 @@ public class Turret : MonoBehaviour {
     {
         active = !active;
 
-        if (active) GetComponent<SpriteRenderer>().color = Color.white;
-        else GetComponent<SpriteRenderer>().color = new Color(1.0f,0.5f,0.5f);
+        if (active) currColor = Color.white;
+        else currColor = new Color(1.0f,0.5f,0.5f);
+
+        GetComponent<SpriteRenderer>().color = currColor;
     }
 }

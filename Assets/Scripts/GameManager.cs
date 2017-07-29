@@ -15,8 +15,7 @@ public class GameManager : MonoBehaviour {
     public int population = 9999;
 
     public int money = 0;
-
-
+    
     SpawnManager _sm;
     Animator _ambient_anim;
     UIManager _ui;

@@ -70,7 +70,9 @@ public class Turret : MonoBehaviour {
     void ShootProjectile()
     {
         GameObject go = (GameObject)Instantiate(projectile, shootingPoint, Quaternion.identity);
-        go.GetComponent<Projectile>().target = target.transform;
+        Projectile p = go.GetComponent<Projectile>();
+        p.target = target.transform;
+        if (this.transform.position.y < target.transform.position.y) p.behindTower = true;
     }
 
     private void OnPostRender()

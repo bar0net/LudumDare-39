@@ -22,6 +22,10 @@ public class Enemy : MonoBehaviour {
 	void Start () {
         if (pathing == null) Destroy(this.gameObject);
         offset = new Vector3(Random.Range(-0.2f,0.2f), Random.Range(-0.2f, 0.2f), 0);
+
+        Animator anim = this.GetComponentInChildren<Animator>();
+        AnimatorStateInfo state = anim.GetCurrentAnimatorStateInfo(0);
+        anim.Play(state.fullPathHash, -1, Random.Range(0f, 1f));
 	}
 	
 	// Update is called once per frame

@@ -9,11 +9,14 @@ public class Projectile : MonoBehaviour {
     public float velocity = 10f;
     public bool checkTimer = true;
     public bool checkDistance = true;
+    public bool behindTower = false;
 
     float timer = 0;
 	// Use this for initialization
 	void Start () {
         if (checkTimer) timer = (target.transform.position - this.transform.position).magnitude / velocity;
+
+        if (behindTower) this.GetComponent<SpriteRenderer>().sortingLayerName = "Bullet-Back";
     }
 	
 	// Update is called once per frame

@@ -21,9 +21,12 @@ public class SpawnManager : MonoBehaviour {
 
     GameObject enemies;
 
+    GameManager _gm;
+
 	// Use this for initialization
 	void Start () {
         enemies = new GameObject("Enemies");
+        _gm = FindObjectOfType<GameManager>();
 	}
 	
 	// Update is called once per frame
@@ -34,7 +37,12 @@ public class SpawnManager : MonoBehaviour {
 
         if (timer <= 0)
         {
-            SpawnEnemy();
+            if (waves[currWave].enemy == null && enemies.transform.childCount <= 0)
+            {
+                EndOfNight();
+                return;
+            }
+            else if (waves[currWave].enemy != null) SpawnEnemy();
 
             if (waves[currWave].number <= 0)
             {
@@ -51,9 +59,27 @@ public class SpawnManager : MonoBehaviour {
 
         GameObject go = (GameObject)Instantiate(waves[currWave].enemy, tr.transform.position, Quaternion.identity, enemies.transform);
         go.GetComponent<Enemy>().pathing = waves[currWave].pathing;
-        go.GetComponent<SpriteRenderer>().sortingOrder = waves[currWave].number;
         go.name = "Enemy_" + waves[currWave].number + "_" + currWave;
 
+        SpriteRenderer[] _srs = go.GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer _sr in _srs) _sr.sortingOrder = waves[currWave].number;
+
         waves[currWave].number--;
+    }
+
+    void EndOfNight()
+    {
+        timer = waves[currWave].wait;
+        currWave++;
+
+        if (currWave >= waves.Length) EndGame();
+
+        _gm.ChangeDaytime();
+        this.enabled = false;
+    }
+
+    void EndGame()
+    {
+        Debug.Log("END OF SPAWNS.");
     }
 }

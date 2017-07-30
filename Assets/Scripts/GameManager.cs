@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour {
     public const float _BULLET_PROXIMITY_ = 0.2f;
 
     public GameObject[] towerTypes;
+    public GameObject[] shadowTurrets;
+    public GameObject activeShadowTurret;
 
     public GameObject towerToBuild { private set; get; }
 
@@ -28,11 +30,14 @@ public class GameManager : MonoBehaviour {
     int powerGeneration = 0;
     public bool isNight = false;
 
+    public bool minionAudio = true;
+
     // Before Anything Else
     private void Awake()
     {
         towerToBuild = null;
         currPower = maxPower;
+        Time.timeScale = 1;
     }
 
     // Use this for initialization
@@ -54,6 +59,8 @@ public class GameManager : MonoBehaviour {
         {
             powerGeneration += t.dailyCharge;
         }
+
+        for (int i = 0; i < shadowTurrets.Length; ++i) shadowTurrets[i].SetActive(false);
     }
 	
 	// Update is called once per frame
@@ -61,7 +68,17 @@ public class GameManager : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.KeypadEnter)) ChangeDaytime(true);
         if (Input.GetMouseButtonUp(1)) {
             if (toogleingPower) ChangeTooglePower();
+            if (towerToBuild != null) towerToBuild = null;
+            if (activeShadowTurret != null)
+            {
+                activeShadowTurret.SetActive(false);
+                activeShadowTurret = null;
+            }
             _ui.UnHighlightTurretBuilder();
+        }
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
+        {
+            _ui.TooglePausePanel();
         }
 	}
 
@@ -78,11 +95,20 @@ public class GameManager : MonoBehaviour {
         {
             towerToBuild = null;
             _ui.UnHighlightTurretBuilder();
+
+            if (activeShadowTurret != null)
+            {
+                activeShadowTurret.SetActive(false);
+                activeShadowTurret = null;
+            }
         }
         else if (index != -1 && index < towerTypes.Length)
         {
             towerToBuild = towerTypes[index];
             _ui.HighlightTurretBuilder(index);
+
+            activeShadowTurret = shadowTurrets[index];
+            activeShadowTurret.SetActive(true);
         }
     }
 
@@ -134,7 +160,7 @@ public class GameManager : MonoBehaviour {
         _ui.UpdatePopulation(population);
         _ui.ChangeTaxText("$" + Mathf.CeilToInt(taxRate * population).ToString());
 
-        if (population == 0) GameOver();
+        if (population == 0) GameOver(false);
     }
 
     public void EarnMoney(int value)
@@ -148,14 +174,22 @@ public class GameManager : MonoBehaviour {
 
     }
 
-    void GameOver()
+    public void GameOver(bool isVictory)
     {
-        Debug.Log("Everyone died!");
+        Time.timeScale = 0;
+        if (isVictory) _ui.ShowWinPanel();
+        else _ui.ShowLosePanel();
     }
 
     public void ChangeTooglePower()
     {
         toogleingPower = !toogleingPower;
         _ui.HighlightTooglePower(toogleingPower);
+    }
+
+    public void ToogleSounds()
+    {
+        minionAudio = !minionAudio;
+        _ui.ColorMuteSound(minionAudio);
     }
 }

@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class TurretAOE : Turret {
 
-    public List<Enemy> enemies = new List<Enemy>();
+    public List<Enemy> target = new List<Enemy>();
+    bool childrenDisabled = false;
+
+    public float powerConsumtion = 0.4f;
 
     [SerializeField]
     float accCost = 0;
@@ -15,15 +18,28 @@ public class TurretAOE : Turret {
 	
 	// Update is called once per frame
 	void Update () {
-        if (!isActive || _gm.currPower <= 0) return;
-        if (!_gm.isNight) return;
-
-		if (enemies.Count > 0)
+        if (!isActive || _gm.currPower <= 0 || !_gm.isNight)
         {
-            for (int i = 0; i < enemies.Count; ++i) enemies[i].Hit(damage * Time.deltaTime);
+            if (!childrenDisabled)
+            {
+                for (int i = 0; i < this.transform.childCount; ++i) this.transform.GetChild(i).gameObject.SetActive(false);
+                childrenDisabled = true;
+            }
+            return;
         }
 
-        accCost += cost * Time.deltaTime;
+        if (childrenDisabled)
+        {
+            for (int i = 0; i < this.transform.childCount; ++i) this.transform.GetChild(i).gameObject.SetActive(true);
+            childrenDisabled = false;
+        }
+
+		if (target.Count > 0)
+        {
+            for (int i = 0; i < target.Count; ++i) target[i].Hit(damage * Time.deltaTime);
+        }
+
+        accCost += powerConsumtion * Time.deltaTime;
         if (accCost > 1)
         {
             int power = Mathf.FloorToInt(accCost);
@@ -32,4 +48,13 @@ public class TurretAOE : Turret {
             accCost -= power;
         }
 	}
+
+    public void AddTarget(Enemy enemy) {
+        if (!target.Contains(enemy)) target.Add(enemy);
+    }
+
+    public void RemoveTarget(Enemy enemy)
+    {
+        target.Remove(enemy);
+    }
 }

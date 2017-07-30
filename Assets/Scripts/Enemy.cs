@@ -22,6 +22,9 @@ public class Enemy : MonoBehaviour {
     bool mirrored = false;
 
     public Vector2 maxOffset = new Vector2(0.2f, 0.2f);
+
+    public GameObject explosionParticle;
+    public int numParticles = 10;
     
 	// Use this for initialization
 	void Start () {
@@ -69,13 +72,25 @@ public class Enemy : MonoBehaviour {
 
     void Success()
     {
-        FindObjectOfType<GameManager>().KillPopulation(Mathf.CeilToInt(health));
+        GameManager gm = FindObjectOfType<GameManager>();
+        if (gm != null)
+            gm.KillPopulation(20*Mathf.CeilToInt(health));
         Destroy(this.gameObject);
     }
 
     void Die()
     {
         FindObjectOfType<GameManager>().EarnMoney(loot);
+
+        if (explosionParticle != null)
+        {
+            for (int i = 0; i < numParticles; ++i)
+            {
+                GameObject go = (GameObject)Instantiate(explosionParticle, this.transform.position, Quaternion.identity);
+                go.GetComponent<ExplosionParticle>().inputDir = direction;
+            }
+        }
+
         Destroy(this.gameObject);
     }
 

@@ -79,6 +79,6 @@ public class SpawnManager : MonoBehaviour {
 
     void EndGame()
     {
-        Debug.Log("END OF SPAWNS.");
+        _gm.GameOver(true);
     }
 }

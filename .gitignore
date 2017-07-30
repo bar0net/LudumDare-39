@@ -272,3 +272,6 @@ __pycache__/
 /Assets/Prefabs
 /Assets/Materials
 /Assets/Animation
+/Python/music
+/Python/.ipynb_checkpoints
+/Assets/Music

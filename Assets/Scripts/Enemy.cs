@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour {
 
     public GameObject pathing;
-    public int health = 100;
+    public float health = 10f;
     public float velocity = 0.5f;
 
     public int loot = 10; 
@@ -69,7 +69,7 @@ public class Enemy : MonoBehaviour {
 
     void Success()
     {
-        FindObjectOfType<GameManager>().KillPopulation(health);
+        FindObjectOfType<GameManager>().KillPopulation(Mathf.CeilToInt(health));
         Destroy(this.gameObject);
     }
 
@@ -80,6 +80,13 @@ public class Enemy : MonoBehaviour {
     }
 
     public void Hit(int damage)
+    {
+        health -= damage;
+
+        if (health <= 0) Die();
+    }
+
+    public void Hit(float damage)
     {
         health -= damage;
 

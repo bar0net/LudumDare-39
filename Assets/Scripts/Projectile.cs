@@ -15,7 +15,9 @@ public class Projectile : MonoBehaviour {
     public GameObject particle;
     public float particleDelay;
 
+    [SerializeField]
     float timer = 0;
+    [SerializeField]
     float particleTimer = 0.1f;
 	// Use this for initialization
 	void Start () {
@@ -39,6 +41,9 @@ public class Projectile : MonoBehaviour {
         }
 
         Vector3 v = target.transform.position - this.transform.position;
+
+        float angle = Vector3.Angle(Vector3.left, v);
+        this.transform.rotation = Quaternion.Euler(0, 0, angle);
 
         if (v.magnitude < GameManager._BULLET_PROXIMITY_)
         {

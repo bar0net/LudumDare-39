@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Turret : MonoBehaviour {
-    public enum DamageTypes { LASER, PROJECTILE }
+    public enum DamageTypes { LASER, PROJECTILE, SOLAR }
 
     public GameObject projectile;
     public Enemy target = null;
@@ -23,8 +23,13 @@ public class Turret : MonoBehaviour {
 	void Start () {
         _gm = FindObjectOfType<GameManager>();
 
-        shootingPoint = new Vector3(this.transform.GetChild(0).position.x, this.transform.GetChild(0).position.y, 0);
-        bulletCost = projectile.GetComponent<Projectile>().bulletCost;
+        if (this.transform.childCount > 0)
+            shootingPoint = new Vector3(this.transform.GetChild(0).position.x, this.transform.GetChild(0).position.y, 0);
+
+        if (projectile != null)
+            bulletCost = projectile.GetComponent<Projectile>().bulletCost;
+
+        if (type == DamageTypes.SOLAR) _gm.ExpandMaxPower(damage);
 	}
 	
 	// Update is called once per frame

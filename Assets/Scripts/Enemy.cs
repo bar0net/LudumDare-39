@@ -20,15 +20,20 @@ public class Enemy : MonoBehaviour {
 
     float timer;
     bool mirrored = false;
+
+    public Vector2 maxOffset = new Vector2(0.2f, 0.2f);
     
 	// Use this for initialization
 	void Start () {
         if (pathing == null) Destroy(this.gameObject);
-        offset = new Vector3(Random.Range(-0.2f,0.2f), Random.Range(-0.2f, 0.2f), 0);
+        offset = new Vector3(Random.Range(-maxOffset.x, maxOffset.x), Random.Range(-maxOffset.y, maxOffset.y), 0);
 
         Animator anim = this.GetComponentInChildren<Animator>();
-        AnimatorStateInfo state = anim.GetCurrentAnimatorStateInfo(0);
-        anim.Play(state.fullPathHash, -1, Random.Range(0f, 1f));
+        if (anim != null)
+        {
+            AnimatorStateInfo state = anim.GetCurrentAnimatorStateInfo(0);
+            anim.Play(state.fullPathHash, -1, Random.Range(0f, 1f));
+        }
 	}
 	
 	// Update is called once per frame
@@ -53,6 +58,8 @@ public class Enemy : MonoBehaviour {
             {
                 mirrored = !mirrored;
                 this.transform.localScale = new Vector3(-this.transform.localScale.x, 1, 1);
+                Transform _child_tr = this.transform.GetChild(0).transform;
+                _child_tr.localPosition = new Vector3(-_child_tr.localPosition.x, _child_tr.localPosition.y, _child_tr.localPosition.z);
             }
             
         }

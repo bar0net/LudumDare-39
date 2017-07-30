@@ -22,12 +22,17 @@ public class GameManager : MonoBehaviour {
 
     public bool toogleingPower = false;
 
+    public float taxRate = 0.02f;
+    public float powerConsume = 0.001f;
+
+    int powerGeneration = 0;
+    bool isNight = false;
+
+    // Before Anything Else
     private void Awake()
     {
         towerToBuild = null;
-
-        currPower = 100;
-        maxPower = 100;
+        currPower = maxPower;
     }
 
     // Use this for initialization
@@ -39,10 +44,17 @@ public class GameManager : MonoBehaviour {
         _ambient_anim = GameObject.Find("Ambient").GetComponent<Animator>();
 
         _ui = FindObjectOfType<UIManager>();
-        _ui.UpdatePower(currPower, maxPower);
+        _ui.UpdatePower(currPower, maxPower, 0);
         _ui.UpdatePopulation(population);
         _ui.UpdateMoney(money);
-	}
+        _ui.ChangeTaxText("-" + Mathf.CeilToInt(powerConsume * population).ToString(), 0);
+
+        Turret[] all_t = FindObjectsOfType<Turret>();
+        foreach (Turret t in all_t)
+        {
+            if (t.type == Turret.DamageTypes.SOLAR) powerGeneration += (Mathf.FloorToInt(2 * t.damage / 3));
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -79,18 +91,39 @@ public class GameManager : MonoBehaviour {
         _ambient_anim.SetTrigger("TransitionTime");
         _sm.enabled = toNight;
         _ui.EnableTimeButton(!toNight);
+        isNight = toNight;
+
+        if (toNight)
+        {
+            _ui.ChangeTaxText("$+" + Mathf.CeilToInt(taxRate * population).ToString(), 1);
+            DrainPower(Mathf.CeilToInt(powerConsume * population));
+        }
+        else
+        {
+            DrainPower(-powerGeneration, false);
+
+            _ui.ChangeTaxText("-" + Mathf.CeilToInt(powerConsume * population).ToString(), 0);
+            EarnMoney(Mathf.CeilToInt(taxRate * population));
+        }
     }
 
-    public void DrainPower(int value)
+    public void DrainPower(int value, bool showGeneration = true)
     {
         currPower -= value;
-        _ui.UpdatePower(currPower, maxPower);
+
+        if (currPower > maxPower) currPower = maxPower;
+        else if (currPower < 0) currPower = 0;
+
+        _ui.UpdatePower(currPower, maxPower, powerGeneration);
     }
 
     public void ExpandMaxPower(int value)
     {
+        powerGeneration += Mathf.FloorToInt(2 * value / 3);
         maxPower += value;
-        _ui.UpdatePower(currPower, maxPower);
+        
+        if (isNight) _ui.UpdatePower(currPower, maxPower, powerGeneration);
+        else _ui.UpdatePower(currPower, maxPower, 0);
     }
 
     public void KillPopulation(int value)
@@ -99,6 +132,7 @@ public class GameManager : MonoBehaviour {
 
         if (population < 0) population = 0;
         _ui.UpdatePopulation(population);
+        _ui.ChangeTaxText("$" + Mathf.CeilToInt(taxRate * population).ToString());
 
         if (population == 0) GameOver();
     }
@@ -106,7 +140,12 @@ public class GameManager : MonoBehaviour {
     public void EarnMoney(int value)
     {
         money += value;
+
+        if (money < 0) money = 0;
+
         _ui.UpdateMoney(money);
+
+
     }
 
     void GameOver()

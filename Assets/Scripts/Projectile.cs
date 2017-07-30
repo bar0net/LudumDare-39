@@ -12,7 +12,11 @@ public class Projectile : MonoBehaviour {
     public bool checkDistance = true;
     public bool behindTower = false;
 
+    public GameObject particle;
+    public float particleDelay;
+
     float timer = 0;
+    float particleTimer = 0.1f;
 	// Use this for initialization
 	void Start () {
         if (checkTimer) timer = (target.transform.position - this.transform.position).magnitude / velocity;
@@ -43,6 +47,17 @@ public class Projectile : MonoBehaviour {
         }
 
         this.transform.position += v.normalized * Time.deltaTime * velocity;
+
+        if (particle != null)
+        {
+            particleTimer -= Time.deltaTime;
+
+            if (particleTimer <= 0)
+            {
+                GameObject go = (GameObject)Instantiate(particle, this.transform.position, Quaternion.identity);
+                particleTimer = particleDelay;
+            }
+        }
 
 	}
 

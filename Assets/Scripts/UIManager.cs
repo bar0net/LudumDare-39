@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour {
     public Image[] turretButtons;
     public Image advanceTimeButton;
     public Sprite[] advanceTimeSprites;
+    public Text taxText;
 
     int turretButtonHighlighted = -1;
     private void Start()
@@ -29,9 +30,13 @@ public class UIManager : MonoBehaviour {
         }
     }
 
-    public void UpdatePower(int currPower, int maxPower)
+    public void UpdatePower(int currPower, int maxPower, int generation = 0)
     {
-        textPower.text = currPower.ToString() + " / " + maxPower.ToString();
+        string s = currPower.ToString() + " / " + maxPower.ToString();
+
+        if (generation != 0) s += " ( +" + generation.ToString() + " )";
+
+        textPower.text = s;
     }
 
     public void UpdatePopulation(int population)
@@ -78,5 +83,13 @@ public class UIManager : MonoBehaviour {
     public void ChangeAdvanceTimeIcon(Sprite sprite)
     {
         advanceTimeButton.sprite = sprite;
+    }
+
+    public void ChangeTaxText(string value, int isMoneyColor = -1)
+    {
+        taxText.text = "( " + value + " )";
+
+        if (isMoneyColor == 0) taxText.color = new Color32(255,226,0,255);
+        else if (isMoneyColor == 1) taxText.color = new Color(0, 1, 0,1);
     }
 }

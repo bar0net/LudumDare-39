@@ -26,7 +26,7 @@ public class Tile : MonoBehaviour {
 
     private void OnMouseEnter()
     {
-        if ((turret == null && _gm.towerToBuild != null) || (turret != null && _gm.toogleingPower && _t.type != Turret.DamageTypes.SOLAR))
+        if ((turret == null && _gm.towerToBuild != null) || (turret != null && _gm.toogleingPower && !(_t is TurretSolar)) )
         {
             for (int i = 0; i < _sr.Count; ++i) _sr[i].color =  new Color(0.75f *_sr[i].color.r, 0.75f * _sr[i].color.g, 0.75f * _sr[i].color.b, 1.0f); //new Color(0.75f, 0.75f, 0.75f);
         }
@@ -39,7 +39,7 @@ public class Tile : MonoBehaviour {
 
     private void OnMouseExit()
     {
-        if ((turret == null && _gm.towerToBuild != null) || (turret != null && _gm.toogleingPower && _t.type != Turret.DamageTypes.SOLAR))
+        if ((turret == null && _gm.towerToBuild != null) || (turret != null && _gm.toogleingPower && !(_t is TurretSolar)))
         {
             _sr[0].color = Color.white;
             if (turret != null) _sr[1].color = _t.currColor;
@@ -52,7 +52,7 @@ public class Tile : MonoBehaviour {
         if (Input.GetMouseButtonUp(0))
         {
             if (_gm.towerToBuild != null) BuildTurret();
-            if (_gm.toogleingPower && turret != null && _t.type != Turret.DamageTypes.SOLAR)
+            if (_gm.toogleingPower && turret != null && !(_t is TurretSolar))
             {
                 _t.ToogleTurret();
                 //_gm.ChangeTooglePower();

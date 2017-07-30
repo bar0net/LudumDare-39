@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class ZoneCollider : MonoBehaviour {
 
-    Turret _t;
+    TurretProjectile _t;
     List<GameObject> listEnemies = new List<GameObject>();
     
     private void Start()
     {
-        _t = this.transform.parent.GetComponent<Turret>();
+        _t = this.transform.parent.GetComponent<TurretProjectile>();
     }
 
     private void Update()
     {
-        if (listEnemies.Count > 0 && _t.target == null) _t.target = listEnemies[0].GetComponent<Enemy>();
+        if (listEnemies.Count > 0 && _t.target == null) _t.target = listEnemies[0];
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

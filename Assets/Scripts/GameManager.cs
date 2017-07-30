@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour {
     public float powerConsume = 0.001f;
 
     int powerGeneration = 0;
-    bool isNight = false;
+    public bool isNight = false;
 
     // Before Anything Else
     private void Awake()
@@ -49,10 +49,10 @@ public class GameManager : MonoBehaviour {
         _ui.UpdateMoney(money);
         _ui.ChangeTaxText("-" + Mathf.CeilToInt(powerConsume * population).ToString(), 0);
 
-        Turret[] all_t = FindObjectsOfType<Turret>();
-        foreach (Turret t in all_t)
+        TurretSolar[] all_t = FindObjectsOfType<TurretSolar>();
+        foreach (TurretSolar t in all_t)
         {
-            if (t.type == Turret.DamageTypes.SOLAR) powerGeneration += (Mathf.FloorToInt(2 * t.damage / 3));
+            powerGeneration += t.dailyCharge;
         }
     }
 	

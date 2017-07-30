@@ -6,7 +6,7 @@ public class ZoneCollider : MonoBehaviour {
 
     Turret _t;
     List<GameObject> listEnemies = new List<GameObject>();
-
+    
     private void Start()
     {
         _t = this.transform.parent.GetComponent<Turret>();
@@ -19,18 +19,19 @@ public class ZoneCollider : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Enemy") listEnemies.Add(collision.gameObject);
+        if (collision.gameObject.tag == "Enemy")
+        {
+            listEnemies.Add(collision.gameObject);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            if (_t.target.name == collision.gameObject.name)
-            {
-                _t.target = null;
-                listEnemies.Remove(collision.gameObject);
-            }
+            if (_t.target != null && _t.target.name == collision.gameObject.name) _t.target = null;
+
+            if (listEnemies.Count > 0) listEnemies.Remove(collision.gameObject);
         }
     }
 }

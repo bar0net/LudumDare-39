@@ -37,8 +37,8 @@ The game is divided into two segments:
 
 - [Files & Source Code](http://jorditudela.net/unity/ld39/LD39-TheyComeatNight-Source.zip)
 
-- [Build for Windows])http://jorditudela.net/unity/ld39/LD39-TheyComeAtNight-PC.zip)
+- [Build for Windows](http://jorditudela.net/unity/ld39/LD39-TheyComeAtNight-PC.zip)
 
-- [Build for MacOS])http://jorditudela.net/unity/ld39/LD39-TheyComeAtNight-Mac.zip)
+- [Build for MacOS](http://jorditudela.net/unity/ld39/LD39-TheyComeAtNight-Mac.zip)
 
 - [Build for Linux](http://jorditudela.net/unity/ld39/LD39-TheyComeAtNight-Linux.zip)

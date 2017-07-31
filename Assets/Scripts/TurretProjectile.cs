@@ -16,7 +16,7 @@ public class TurretProjectile : Turret {
 
         bulletCost = projectile.GetComponent<Projectile>().bulletCost;
 
-        shootPoint = this.transform.FindChild("ShootingPoint");
+        shootPoint = this.transform.Find("ShootingPoint");
         if (shootPoint == null) this.enabled = false;
     }
 	

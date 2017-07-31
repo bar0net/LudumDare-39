@@ -35,7 +35,7 @@ The game is divided into two segments:
 
 - [They Come at Night @ Ludum Dare](https://ldjam.com/events/ludum-dare/39/they-come-at-night)
 
-- [Files & Source Code](http://jorditudela.net/unity/ld39/LD39-TheyComeatNight-Source.zip)
+- [Files & Source Code, Ludum Dare Submission](http://jorditudela.net/unity/ld39/LD39-TheyComeatNight-Source.zip)
 
 - [Build for Windows](http://jorditudela.net/unity/ld39/LD39-TheyComeAtNight-PC.zip)
 

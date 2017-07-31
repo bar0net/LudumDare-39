@@ -18,4 +18,9 @@ public class SceneOverlord : MonoBehaviour {
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    public void DeleteSeed()
+    {
+        PlayerPrefs.DeleteKey("seed");
+    }
 }

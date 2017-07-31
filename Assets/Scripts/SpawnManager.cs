@@ -60,6 +60,7 @@ public class SpawnManager : MonoBehaviour {
         GameObject go = (GameObject)Instantiate(waves[currWave].enemy, tr.transform.position, Quaternion.identity, enemies.transform);
         go.GetComponent<Enemy>().pathing = waves[currWave].pathing;
         go.name = "Enemy_" + waves[currWave].number + "_" + currWave;
+        if (!_gm.minionAudio) go.GetComponent<AudioSource>().enabled = false;
 
         SpriteRenderer[] _srs = go.GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer _sr in _srs) _sr.sortingOrder = waves[currWave].number;

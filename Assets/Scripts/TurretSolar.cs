@@ -8,6 +8,6 @@ public class TurretSolar : Turret {
 
     private void Start()
     {
-        _gm.ExpandMaxPower(batteryCapacity);
+        _gm.ExpandMaxPower(dailyCharge,batteryCapacity);
     }
 }

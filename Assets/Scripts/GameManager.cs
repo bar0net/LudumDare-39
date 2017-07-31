@@ -57,10 +57,12 @@ public class GameManager : MonoBehaviour {
         TurretSolar[] all_t = FindObjectsOfType<TurretSolar>();
         foreach (TurretSolar t in all_t)
         {
-            powerGeneration += t.dailyCharge;
+            if (t.enabled) powerGeneration += t.dailyCharge;
         }
 
         for (int i = 0; i < shadowTurrets.Length; ++i) shadowTurrets[i].SetActive(false);
+
+        this.GetComponent<AudioSource>().Play();
     }
 	
 	// Update is called once per frame
@@ -143,10 +145,10 @@ public class GameManager : MonoBehaviour {
         _ui.UpdatePower(currPower, maxPower, powerGeneration);
     }
 
-    public void ExpandMaxPower(int value)
+    public void ExpandMaxPower(int generation, int maxPow)
     {
-        powerGeneration += Mathf.FloorToInt(2 * value / 3);
-        maxPower += value;
+        powerGeneration += generation;
+        maxPower += maxPow;
         
         if (isNight) _ui.UpdatePower(currPower, maxPower, powerGeneration);
         else _ui.UpdatePower(currPower, maxPower, 0);

@@ -8,6 +8,7 @@ public class TurretSolar : Turret {
 
     private void Start()
     {
+        // Update GameManager power statistics when it's built
         _gm.ExpandMaxPower(dailyCharge,batteryCapacity);
     }
 }
